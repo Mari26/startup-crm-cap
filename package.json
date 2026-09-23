@@ -1,0 +1,58 @@
+{
+  "name": "startup-crm-cap",
+  "version": "1.0.0",
+  "description": "Welcome to your new CAP project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch-project1": "cds watch --open project1/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@sap/cds": "^10.1.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^3.1.1",
+    "cds-plugin-ui5": "^0.17.0"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "sqlite.db"
+        }
+      },
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "admin": {
+            "roles": [
+              "Admin"
+            ]
+          },
+          "operator": {
+            "roles": [
+              "Operator"
+            ]
+          },
+          "technician": {
+            "roles": [
+              "Technician"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/project1"
+  ]
+}
