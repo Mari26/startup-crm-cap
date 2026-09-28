@@ -254,19 +254,26 @@ module.exports = cds.service.impl(async function () {
             order.totalPriceGEL = sumGEL;
         }
 
-        // Live currency conversion (GEL -> USD, EUR)
+    // Live currency conversion (GEL -> USD, EUR) with Graceful Degradation
         if (order.totalPriceGEL) {
+            const FALLBACK_RATES = { USD: 0.37, EUR: 0.34 };
+
             try {
                 const response = await fetch('https://open.er-api.com/v6/latest/GEL');
+                if (!response.ok) throw new Error(`API status: ${response.status}`);
+                
                 const rateData = await response.json();
-                if (rateData && rateData.rates) {
-                    order.totalPriceUSD = parseFloat((order.totalPriceGEL * (rateData.rates.USD || 0.37)).toFixed(2));
-                    order.totalPriceEUR = parseFloat((order.totalPriceGEL * (rateData.rates.EUR || 0.34)).toFixed(2));
-                }
+                const usdRate = rateData?.rates?.USD || FALLBACK_RATES.USD;
+                const eurRate = rateData?.rates?.EUR || FALLBACK_RATES.EUR;
+
+                order.totalPriceUSD = parseFloat((order.totalPriceGEL * usdRate).toFixed(2));
+                order.totalPriceEUR = parseFloat((order.totalPriceGEL * eurRate).toFixed(2));
             } catch (err) {
-                order.totalPriceUSD = parseFloat((order.totalPriceGEL * 0.37).toFixed(2));
-                order.totalPriceEUR = parseFloat((order.totalPriceGEL * 0.34).toFixed(2));
+                // Fallback to static rates if live API fails or network is offline
+                order.totalPriceUSD = parseFloat((order.totalPriceGEL * FALLBACK_RATES.USD).toFixed(2));
+                order.totalPriceEUR = parseFloat((order.totalPriceGEL * FALLBACK_RATES.EUR).toFixed(2));
             }
         }
+
     });
 });
