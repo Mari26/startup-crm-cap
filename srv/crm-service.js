@@ -254,7 +254,7 @@ module.exports = cds.service.impl(async function () {
             order.totalPriceGEL = sumGEL;
         }
 
-    // Live currency conversion (GEL -> USD, EUR) with Graceful Degradation
+    // Live currency conversion (GEL -> USD, EUR) 
         if (order.totalPriceGEL) {
             const FALLBACK_RATES = { USD: 0.37, EUR: 0.34 };
 
