@@ -4,8 +4,10 @@
   "description": "Welcome to your new CAP project.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch-project1": "cds watch --open project1/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "start": "cds-serve",
+    "watch": "cds watch",
+    "watch-project1": "cds watch --open project1/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "test": "jest test/crm.test.js --runInBand --forceExit"
   },
   "keywords": [],
   "author": "",
@@ -16,8 +18,10 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@cap-js/cds-test": "^1.0.2",
     "@cap-js/sqlite": "^3.1.1",
-    "cds-plugin-ui5": "^0.17.0"
+    "cds-plugin-ui5": "^0.17.0",
+    "jest": "^30.5.2"
   },
   "cds": {
     "requires": {
